@@ -7,6 +7,7 @@ import java.util.Scanner;
 import db.DatabaseConnection;
 
 public class world_db {
+	
 	private static Connection con;
 	private static final Scanner scan = new Scanner(System.in);
 	
@@ -17,11 +18,12 @@ public class world_db {
 	
 	private static String chooseTable() {
 		while(true) {
-			System.out.println(CYAN+"\n--- TABULAS ---\n"+RESET
-					+ "1. City\n"
-					+ "2. Country\n"
+			System.out.println(CYAN + "\n ----- TABULAS -----\n" + RESET
+					+ "1. CITY\n"
+					+ "2. COUNTRY\n"
 					+ "3. CountryLanguage\n"
-					+ "0. Atpakaļ");
+					+ "0. Atpakaļ\n"
+					+ "Izvēlies tabulu: ");
 			String c = scan.nextLine().trim();
 			
 			return switch(c) {
@@ -33,48 +35,47 @@ public class world_db {
 				System.out.println("Nepareiza izvēle.");
 				yield "exit";
 			}
-			};
+		};
+	}
+}
+	
+	private static void tableMenu(String table, SelectOperation selectOp) {
+		boolean back = false;
+		while (!back) {
+			System.out.println("\n--- " + table.toUpperCase() + " ---\n"
+					+ "1. Atlasīt (SELECT)\n"
+					+ "2. Pievienot (INSERT)\n"
+					+ "3. Atjaunot (UPDATE)\n"
+					+ "4. Dzēst (DELETE)\n"
+					+ "0. Atpakaļ (RETURN)\n"
+					+ "Izvēle: ");
+			String c = scan.nextLine().trim();
+			
+			switch(c) {
+				case "1" -> selectOp.select(con, table);
+				case "0" -> back = true;
+				default -> System.out.println("Nepareiza izvēle.");
+			}
 		}
 	}
 	
-	//Vēlāk jāpievieno arī pārējie parametri InsertOperation, DeleteOperation, utt.
-	private static void tableMenu(String table, SelectOperation selectOp) {
-		boolean back = false;
-		while(!back) {
-			System.out.println("\n--- " + table.toUpperCase() + " ---\n"
-					+ "1. Atlasīt (SELECT)\n"
-					+ "2. Pievienot (INSERT)"
-					+ "3. Atjaunināt (UPDATE)"
-					+ "4. Dzēst (DELETE)\n"
-					+ "0. Atpakaļ\n"
-					+ "Izvēle: ");
-				String c = scan.nextLine().trim();
-			
-			return switch(c) {
-			case "1" -> System.out.println("Jātaisa select metode");
-			//selectOp.select(con, table);
-			//turpinājums būs pārējie case
-			case "0" -> back = true;
-			default -> System.out.println("Nepareiza izvēle.");
-			};
-		}
-	}
-
 	public static void main(String[] args) {
 		try {
 		con = DatabaseConnection.getConnection();
-		System.out.println("Izveidots savienojums ar datu bāzi World!");
+		System.out.println("Izveidots savienojums ar DB world.");
 		
 		SelectOperation selectOp = new SelectOperation();
-		
+		// 
 		
 		boolean running = true;
+		
+		
 		while(running) {
-			System.out.println(CYAN+"\n-----WORLD-DB-----\n"+RESET
-					+ GREEN+"1. Tabulas\n"+RESET
-					+ "2. Skati\n"
-					+ RED+"0. Apturēt\n"+RESET
-					+ CYAN+"Izvēle: "+RESET);
+			System.out.println(CYAN + "\n----- WORLD DB -----\n" + RESET
+					+ GREEN +  "1. tabulas\n" 
+					+ "2. Skaitļi\n" + RESET
+					+ RED + "0. Apturēt\n" + RESET
+					+ CYAN + "Izvēle: " + RESET);
 			String mainChoice = scan.nextLine().trim();
 			
 			switch(mainChoice) {
@@ -84,17 +85,23 @@ public class world_db {
 					tableMenu(table, selectOp);
 				}
 			}
-			case "2" -> 
-				System.out.println("Būs skati...");
-			case "0" -> running = false;
-			default -> 	System.out.println(RED+"Nepareiza izvēle!"+RESET);
-		}
 			
-	}
+			case "2" -> 
+			System.out.println("Būs skati..");
+			
+			case "0" -> running = false;
+			
+			default -> System.out.println(RED + "Nepareiza izvēle!" + RESET);
+			
+			}
+			
+		}
+		
 		con.close();
-		System.out.println(GREEN+"Savienojums ar datu bāzi slēgts"+RESET);
-		} catch(SQLException e) {
-			System.out.println("DB kļūda: "+e.getMessage());
+		System.out.println("Savienojums ar DB slēgts.");
+		
+	} catch (SQLException e) {
+			System.out.println("DB kļūda: " + e.getMessage());
 		}
 	}
 
