@@ -65,15 +65,16 @@ public class world_db {
 		System.out.println("Izveidots savienojums ar DB world.");
 		
 		SelectOperation selectOp = new SelectOperation();
-		// 
+		ViewManager viewManager = new ViewManager(con, selectOp, scan);
+		// Vēlāk būs insert operation, delete operation utt
 		
 		boolean running = true;
 		
 		
 		while(running) {
 			System.out.println(CYAN + "\n----- WORLD DB -----\n" + RESET
-					+ GREEN +  "1. tabulas\n" 
-					+ "2. Skaitļi\n" + RESET
+					+ GREEN +  "1. Tabulas\n" 
+					+ "2. Skati\n" + RESET
 					+ RED + "0. Apturēt\n" + RESET
 					+ CYAN + "Izvēle: " + RESET);
 			String mainChoice = scan.nextLine().trim();
@@ -87,7 +88,7 @@ public class world_db {
 			}
 			
 			case "2" -> 
-			System.out.println("Būs skati..");
+			viewManager.showViewsMenu();
 			
 			case "0" -> running = false;
 			
