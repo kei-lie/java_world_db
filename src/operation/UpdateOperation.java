@@ -5,25 +5,28 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class InsertOperation {
+public class UpdateOperation {
 	static Scanner scan = new Scanner(System.in);
-	public void insert (Connection con, String table) {
+	
+	public void update(Connection con, String table) {
 		try {
-			switch(table) {
-			case "city" -> insertCity(con);
-			//case "country" -> insertCountry(con);
-			//case "countryLanguage" -> insertCountryLanguage(con);
-			//Pašiem jāpievieno country un countrylanguage
+			switch(table){
+			case "city" -> updateCity(con);
+			//Pašiem jāuztaisa country and countrylanguage
+			
 			default -> System.out.println("Neatbalstīta tabulla: "+table);
 			}
-		}catch(SQLException e){
-			System.out.println("INSERT kļūda: " + e.getMessage());
+			
+		}catch(SQLException e) {
+			System.out.println("UPDATE kļūda: " + e.getMessage());
 		}
 	}
 	
-	private void insertCity(Connection con) throws SQLException {
-		//Trūkst ievades datu pārbaude
-		System.out.println("Ievadi pilsētas nosaukumu:");
+	private void updateCity(Connection con) throws SQLException{
+		System.out.println("Kuru pilsētu labot? Norādi ID:");
+		int ID = scan.nextInt();
+		scan.nextLine();
+		System.out.println("Norādi pilsētas nosaukumu:");
 		String name = scan.nextLine();
 		System.out.println("Ievadi valsts kodu (3 simboli):");
 		String countrycode = scan.nextLine();
@@ -33,15 +36,16 @@ public class InsertOperation {
 		int population = scan.nextInt();
 		scan.nextLine();
 		
-		String sql = "INSERT INTO city (Name, CountryCode, District, Population) VALUES (?, ?, ?, ?)";
+		String sql = "UPDATE city SET Name = ?, CountryCode = ?, District = ?, Population = ? WHERE ID = ?";
 		
 		try(PreparedStatement ps = con.prepareStatement(sql)){
 			ps.setString(1, name);
 			ps.setString(2, countrycode);
 			ps.setString(3, district);
 			ps.setInt(4, population);
+			ps.setInt(5, ID);
 			int rows = ps.executeUpdate();
-			System.out.println("CITY tabulā ievietotas: "+rows+" rindas");
+			System.out.println("CITY tabulā atjaunots: "+rows+" rindas");
 		}
 	}
 }

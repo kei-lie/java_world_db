@@ -39,7 +39,8 @@ public class world_db {
 	}
 }
 	
-	private static void tableMenu(String table, SelectOperation selectOp, InsertOperation insertOp) {
+	private static void tableMenu(String table, SelectOperation selectOp, 
+			InsertOperation insertOp, UpdateOperation updateOp) {
 		boolean back = false;
 		while (!back) {
 			System.out.println("\n--- " + table.toUpperCase() + " ---\n"
@@ -54,6 +55,7 @@ public class world_db {
 			switch(c) {
 				case "1" -> selectOp.select(con, table);
 				case "2" -> insertOp.insert(con, table);
+				case "3" -> updateOp.update(con, table);
 				case "0" -> back = true;
 				default -> System.out.println("Nepareiza izvēle.");
 			}
@@ -68,7 +70,8 @@ public class world_db {
 		SelectOperation selectOp = new SelectOperation();
 		ViewManager viewManager = new ViewManager(con, selectOp, scan);
 		InsertOperation insertOp = new InsertOperation();
-		// Vēlāk būs DeleteOperation utt
+		UpdateOperation updateOp = new UpdateOperation();
+		// Vēlāk būs DeleteOperation.
 		
 		
 		boolean running = true;
@@ -86,7 +89,7 @@ public class world_db {
 			case "1" -> {
 				String table = chooseTable();
 				if(!table.equals("exit")) {
-					tableMenu(table, selectOp, insertOp);
+					tableMenu(table, selectOp, insertOp, updateOp);
 				}
 			}
 			
