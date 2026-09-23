@@ -12,7 +12,7 @@ public class InsertOperation {
 			switch(table) {
 			case "city" -> insertCity(con);
 			//case "country" -> insertCountry(con);
-			//case "countryLanguage" -> insertCountryLanguage(con);
+			case "countryLanguage" -> insertCLanguage(con);
 			//Pašiem jāpievieno country un countrylanguage
 			default -> System.out.println("Neatbalstīta tabulla: "+table);
 			}
@@ -42,6 +42,30 @@ public class InsertOperation {
 			ps.setInt(4, population);
 			int rows = ps.executeUpdate();
 			System.out.println("CITY tabulā ievietotas: "+rows+" rindas");
+		}
+	}
+	
+	private void insertCLanguage(Connection con) throws SQLException {
+		//Trūkst ievades datu pārbaude
+		System.out.println("Ievadi valsts kodu (3 simboli):");
+		String countrycode = scan.nextLine();
+		System.out.println("Ievadi valsts valodu:");
+		String language = scan.nextLine();
+		System.out.println("Vai ir oficiāla(T/F:");
+		String isOfficial = scan.nextLine();
+		System.out.println("Norādi procentus:");
+		int percentage = scan.nextInt();
+		scan.nextLine();
+		
+		String sql = "INSERT INTO countrylanguage (CountryCode, Language, isOfficial, percentage) VALUES (?, ?, ?, ?)";
+		
+		try(PreparedStatement ps = con.prepareStatement(sql)){
+			ps.setString(1, countrycode);
+			ps.setString(2, language);
+			ps.setString(3, isOfficial);
+			ps.setInt(4, percentage);
+			int rows = ps.executeUpdate();
+			System.out.println("CountryLanguage tabulā ievietotas: "+rows+" rindas");
 		}
 	}
 }

@@ -12,6 +12,8 @@ public class UpdateOperation {
 		try {
 			switch(table){
 			case "city" -> updateCity(con);
+			//case "country" -> updateCountry(con);
+			//case "countryLanguage" -> updateCLanguage(con);
 			//Pašiem jāuztaisa country and countrylanguage
 			
 			default -> System.out.println("Neatbalstīta tabulla: "+table);
