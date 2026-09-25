@@ -12,7 +12,7 @@ public class UpdateOperation {
 		try {
 			switch(table){
 			case "city" -> updateCity(con);
-			//case "country" -> updateCountry(con);
+			case "country" -> updateCountry(con);
 			//case "countryLanguage" -> updateCLanguage(con);
 			//Pašiem jāuztaisa country and countrylanguage
 			
@@ -46,6 +46,35 @@ public class UpdateOperation {
 			ps.setString(3, district);
 			ps.setInt(4, population);
 			ps.setInt(5, ID);
+			int rows = ps.executeUpdate();
+			System.out.println("CITY tabulā atjaunots: "+rows+" rindas");
+		}
+	}
+	
+	private void updateCountry(Connection con) throws SQLException{
+		System.out.println("Kuru valsti labot? Norādi kodu:");
+		int code = scan.nextInt();
+		scan.nextLine();
+		System.out.println("Norādi nosaukumu nosaukumu:");
+		String name = scan.nextLine();
+		System.out.println("Norādi valsts kontinentu");
+		String continent = scan.nextLine();
+		System.out.println("Norādi reģionu:");
+		String region = scan.nextLine();
+		System.out.println("Norādi platību:");
+		int surface = scan.nextInt();
+		scan.nextLine();
+		
+		String sql = "UPDATE country SET Name = ?, Continent = ?, Region = ?, SurfaceArea = ?, "
+				+ "IndepYear = ?, Population = ?, SurfaceArea = ? WHERE Code = ?";
+		
+		try(PreparedStatement ps = con.prepareStatement(sql)){
+			ps.setInt(1, code);
+			ps.setString(2, name);
+			ps.setString(3, continent);
+			ps.setString(4, region);
+			ps.setInt(5, surface);
+			
 			int rows = ps.executeUpdate();
 			System.out.println("CITY tabulā atjaunots: "+rows+" rindas");
 		}

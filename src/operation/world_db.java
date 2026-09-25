@@ -73,8 +73,6 @@ public class world_db {
 		InsertOperation insertOp = new InsertOperation();
 		UpdateOperation updateOp = new UpdateOperation();
 		DeleteOperation deleteOp = new DeleteOperation();
-		// Vēlāk būs DeleteOperation.
-		
 		
 		boolean running = true;
 		
